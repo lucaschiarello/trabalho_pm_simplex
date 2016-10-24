@@ -4129,3 +4129,12 @@ ul.notifications {
   border: 1px solid #e5e5e5; }
 
 /** /Dropzone.js **/
+
+
+/* CSS Start */
+.center{
+  text-align: center;
+}
+.row2 {
+  display: none;
+}
