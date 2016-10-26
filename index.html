@@ -100,11 +100,11 @@
 										<div class="col-md-12">
 											<form class="form-horizontal form-label-left input_mask" action="javascript:void(0);">
 												<div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-													<input type="tel" class="form-control has-feedback-left" id="inputVariables" ng-model="inputVariables" placeholder="Quantas variáveis de decisão?">
+													<input type="number" class="form-control has-feedback-left" id="inputVariables" ng-model="inputVariables" placeholder="Quantas variáveis de decisão?">
 													<span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
 												</div>
 												<div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-													<input type="tel" class="form-control has-feedback-left" id="inputRestrictions" ng-model="inputRestrictions" placeholder="Quantas restrições?">
+													<input type="number" class="form-control has-feedback-left" id="inputRestrictions" ng-model="inputRestrictions" placeholder="Quantas restrições?">
 													<span class="fa fa-list-ol form-control-feedback left" aria-hidden="true"></span>
 												</div>
 											</form>
@@ -143,7 +143,7 @@
 													<label class="control-label col-md-2 col-sm-2 col-xs-12">Função Z=</label>
 													<div class="form-group" >
 														<div class="col-md-1 col-sm-1 col-xs-12" ng-repeat="i in getNumber(inputVariables)">
-															<input type="text" class="form-control" placeholder="x{{i}}">
+															<input type="number" class="form-control" ng-model="function_z[i]" placeholder="x{{i}}">
 														</div>
 													</div>
 												</div>
@@ -152,17 +152,17 @@
 													<label class="control-label col-md-2 col-sm-2 col-xs-12">Restrição {{x}}=</label>
 													<div class="form-group" >
 														<div class="col-md-1 col-sm-1 col-xs-12" ng-repeat="y in getNumber(inputVariables)">
-															<input type="text" class="form-control" placeholder="x{{y}}">
+															<input type="number" class="form-control" placeholder="x{{y}}" ng-model="restriction[x][y]">
 														</div>
 														<div class="col-md-1 col-sm-1 col-xs-12">
-															<select class="form-control">
+															<select class="form-control" ng-model="restriction[x]['sinal']">
 																<option value="-1">≤</option>
 																<option value="1">≥</option>
 																<option value="0">=</option>
 															</select>
 														</div>
 														<div class="col-md-2 col-sm-2 col-xs-12">
-															<input type="text" class="form-control" placeholder="">
+															<input type="number" class="form-control" ng-model="restriction[x]['result']">
 														</div>
 													</div>
 												</div>
@@ -174,17 +174,95 @@
 													</div>
 												</div>
 
+												<div class="form-group form-buttons">
+													<button ng-click="collectData()" type="button" class="btn btn-danger">Mostra valores atuais</button>
+													<button ng-click="initSimplex()" type="button" class="btn btn-success">Calcular Valores</button>
+												</div>
+
 											</form>
 										</div> <!-- Finaliza o bloco do formulário -->
-
 									</div>
 								</div>
 							</div>
 						</div>
+						
+						<!-- Inicia as tabelas -->
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Tabela 1 <small>Tabela Inicial</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                  	<table class="table table-bordered" >
+                  		<thead>
+                        <tr>
+                          <th>Z</th>
+                          <th ng-repeat="i in getNumber(inputVariables)">x{{i}}</th>
+                          <th ng-repeat="i in getNumber(inputRestrictions)">xF{{i}}</th>
+                          <th>b</th>
+                        </tr>
+                      </thead>
+                      <tbody id="table_show1">
+                      </tbody>
+                  	</table>
+                    <!-- <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Z</th>
+                          <th>x1</th>
+                          <th>x2</th>
+                          <th>x3</th>
+                          <th>xF1</th>
+                          <th>xF2</th>
+                          <th>xF3</th>
+                          <th>b</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      	<!-- Aqui vem os valores da tabela
+                        <tr>
+                          <th>1</th>
+                          <th>2</th>
+                          <th>3</th>
+                          <th>4</th>
+                          <th>5</th>
+                          <th>6</th>
+                          <th>7</th>
+                          <th>8</th>
+                          <th>9</th>
+                        </tr>
+                        <tr>
+                          <th>1</th>
+                          <th>2</th>
+                          <th>3</th>
+                          <th>4</th>
+                          <th>5</th>
+                          <th>6</th>
+                          <th>7</th>
+                          <th>8</th>
+                          <th>9</th>
+                        </tr>
+                      </tbody>
+                    </table> -->
+
+                  </div>
+                </div>
+              </div>
+						</div>
 
 					</div>
 				</div>
-				<!-- /page content -->
+				<!-- page content -->
 
 				<!-- footer content -->
 				<footer>
@@ -193,7 +271,7 @@
 					</div>
 					<div class="clearfix"></div>
 				</footer>
-				<!-- /footer content -->
+				<!-- footer content -->
 			</div>
 		</div>
 

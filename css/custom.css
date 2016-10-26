@@ -638,7 +638,7 @@ a:hover, a:focus {
 
 .panel_toolbox {
   float: right;
-  min-width: 70px; }
+  /*min-width: 70px;*/ }
 
 .panel_toolbox > li {
   float: left;
@@ -4137,4 +4137,8 @@ ul.notifications {
 }
 .row2 {
   display: none;
+}
+.form-buttons{
+  margin-top: 20px;
+  text-align: center;
 }
