@@ -67,18 +67,96 @@ angular.module('AllApp', [])
 			// Mostra a tabela número 1
 			$("#table_show1").html("");
 			var table_show1 = document.getElementById("table_show1");
-	    for (var i=0; i<table.length; i++) {
-        var row = table_show1.insertRow();
+	    for (var i=0; i<table.length; i++) { 
+        var row = table_show1.insertRow(); //linha
         for (var j=0; j<table[i].length; j++) {
-          var cell = row.insertCell();
+          var cell = row.insertCell(); //coluna
           cell.appendChild(document.createTextNode(table[i][j]));
         }
 	    }
 
-			
-
+			// Aqui inicia o cálculo do Simplex
+			var table = calcSimplex(table);
+	    for (var i=0; i<table[0].length; i++) { 
+	    	console.log(table[0][i]);
+	    	if (table[0][i] < 0) {
+	    		var table = calcSimplex(table);
+	    	}
+			}	
 		}
 
+		
 
+});
 
-  });
+function calcSimplex(table) {
+ 
+	// Pega o menor valor negativo da linha Z (linha 1)
+	min = Math.min.apply(Math, table[0]); //Pega o valor mínimo da linha
+	var min_key = table[0].indexOf(min); //Pega a key da coluna que entra
+	
+	// Agora pega o valor b da coluna e divide pelo valor da coluna que entra(min_key)
+	var temp=10000000;
+	var key_pivo=0;
+	console.log("valor do id coluna = "+min_key);
+  for (var i=1; i<table.length; i++) { 
+		// Pega o ultimo valor da linha e divide pelo min_key
+		var value = table[i][table[i].length-1]/table[i][min_key];
+		if (value > 0 && value < temp) {
+			temp = value;
+			key_pivo = i;
+		}
+  }
+  // console.log(temp); //Mostra o valor da divisão do pivo
+  // alert(key_pivo); //Mostra a key do pivo
+
+  console.log("Valor do do id da linha = "+ key_pivo);
+  var pivo_value = table[key_pivo][min_key];
+  //Pega todos os elementos da linha pivo e divide pelo valor do pivo
+  for (var i=0; i<table[key_pivo].length; i++) {
+  	// console.log(table[key_pivo][i]+"/"+pivo_value);
+  	table[key_pivo][i] = table[key_pivo][i]/pivo_value;
+  }
+
+  $("#table_show2").html("");
+	var table_show2 = document.getElementById("table_show2");
+  for (var i=0; i<table.length; i++) { 
+    var row = table_show2.insertRow(); //linha
+    for (var j=0; j<table[i].length; j++) {
+      var cell = row.insertCell(); //coluna
+      cell.appendChild(document.createTextNode(parseFloat(table[i][j]).toFixed(3)));
+    }
+  }
+
+	// Cria uma nova table com os valores antigos
+	table_temp = [];
+  for (var i=0; i<table.length; i++) { 
+		var cell = [];
+    for (var j=0; j<table[i].length; j++) {
+      cell.push(table[i][j]);
+    }
+    table_temp.push(cell);
+  }
+  // console.log(table_temp);
+
+ 	for (var i=0; i<table.length; i++) { 
+    if (i!=key_pivo) {
+    	for (var j=0; j<table[i].length; j++) {
+    		table[i][j]=(table[key_pivo][j]*((table_temp[i][min_key])*-1))+table_temp[i][j];
+    		// console.log((table[key_pivo][j]+"*"+((table_temp[i][min_key])*-1))+"+"+table_temp[i][j]);
+    	}
+    }
+  }
+
+  $("#table_show3").html("");
+	var table_show3 = document.getElementById("table_show3");
+  for (var i=0; i<table.length; i++) { 
+    var row = table_show3.insertRow(); //linha
+    for (var j=0; j<table[i].length; j++) {
+      var cell = row.insertCell(); //coluna
+      cell.appendChild(document.createTextNode(parseFloat(table[i][j]).toFixed(3)));
+    }
+  }
+
+	return table;
+}
