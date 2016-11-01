@@ -27,7 +27,7 @@ Foi utilizado as linguagens de programação HTML, CSS e Javascript durante o de
 
 ## Contribuidores
 
-Os desenvolvedores deste trabalho foram Lucas Luís Chiarello e Renan Pizatto Pagno, alunos do curso de Ciência da Computação no 8º sementre.
+Os desenvolvedores deste trabalho foram Lucas Luís Chiarello e Renan Pizzatto Pagno, alunos do curso de Ciência da Computação no 8º sementre.
 
 ## License
 
