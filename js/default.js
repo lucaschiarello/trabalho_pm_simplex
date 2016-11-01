@@ -21,8 +21,8 @@ angular.module('AllApp', [])
 		}
 
 		$scope.collectData = function(){
-			console.log($scope.function_z);
-			console.log($scope.restriction);
+			// console.log($scope.function_z);
+			// console.log($scope.restriction);
 		}
 
 		$scope.initSimplex = function() {
@@ -78,11 +78,40 @@ angular.module('AllApp', [])
 			// Aqui inicia o cálculo do Simplex
 			var table = calcSimplex(table);
 	    for (var i=0; i<table[0].length; i++) { 
-	    	console.log(table[0][i]);
+	    	//console.log(table[0][i]);
 	    	if (table[0][i] < 0) {
 	    		var table = calcSimplex(table);
 	    	}
-			}	
+			}
+
+			//Agora mostra as váriaveis finais do cálculo
+			var not_basic = []; //Variáveis não básicas
+			var basic = []; //Variáveis básicas
+			for (var i=0; i<table.length; i++) { 
+        for (var j=0; j<table[i].length; j++) {
+        	if (j!=0) {
+        		if (table[i][j] !=0 && table[i][j] != 1) {
+        			not_basic.push({columm: j, value: table[i][table[i].length-1]});
+        		} else if(table[i][j] != 0) {
+        			if (j<=$scope.inputVariables) {
+        				basic.push({columm: j, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "x"});
+        			} else {
+        				basic.push({columm: j-$scope.inputVariables, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "xF"});
+        			}
+        		}
+        	}
+        }
+	    }
+
+	    // console.log(not_basic);
+	    // console.log("basicas");
+	    $scope.basics = basic;
+	    $scope.z_value = parseFloat(table[0][table[0].length-1]).toFixed(3);
+
+	  //   $.each(basic, function(index, value) {
+		 //    console.log(value);
+			// }); 
+
 		}
 
 		
@@ -98,7 +127,7 @@ function calcSimplex(table) {
 	// Agora pega o valor b da coluna e divide pelo valor da coluna que entra(min_key)
 	var temp=10000000;
 	var key_pivo=0;
-	console.log("valor do id coluna = "+min_key);
+	// console.log("valor do id coluna = "+min_key);
   for (var i=1; i<table.length; i++) { 
 		// Pega o ultimo valor da linha e divide pelo min_key
 		var value = table[i][table[i].length-1]/table[i][min_key];
@@ -110,7 +139,7 @@ function calcSimplex(table) {
   // console.log(temp); //Mostra o valor da divisão do pivo
   // alert(key_pivo); //Mostra a key do pivo
 
-  console.log("Valor do do id da linha = "+ key_pivo);
+  // console.log("Valor do do id da linha = "+ key_pivo);
   var pivo_value = table[key_pivo][min_key];
   //Pega todos os elementos da linha pivo e divide pelo valor do pivo
   for (var i=0; i<table[key_pivo].length; i++) {
