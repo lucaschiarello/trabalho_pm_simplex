@@ -87,25 +87,30 @@ angular.module('AllApp', [])
 			//Agora mostra as váriaveis finais do cálculo
 			var not_basic = []; //Variáveis não básicas
 			var basic = []; //Variáveis básicas
+			var columm_content = []; //Array com as colunas que já foram passadas
 			for (var i=0; i<table.length; i++) { 
-        for (var j=0; j<table[i].length; j++) {
-        	if (j!=0) {
-        		if (table[i][j] !=0 && table[i][j] != 1) {
-        			not_basic.push({columm: j, value: table[i][table[i].length-1]});
-        		} else if(table[i][j] != 0) {
-        			if (j<=$scope.inputVariables) {
-        				basic.push({columm: j, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "x"});
-        			} else {
-        				basic.push({columm: j-$scope.inputVariables, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "xF"});
-        			}
-        		}
-        	}
+        for (var j=1; j<table[i].length-1; j++) {
+      		if (table[i][j] !=0 && table[i][j] != 1 && !columm_content.includes(j)) {
+      			columm_content.push(j);
+      			if (j<=$scope.inputVariables) {
+	      			not_basic.push({columm: j, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "x"});
+	      		} else {
+      				not_basic.push({columm: j-$scope.inputVariables, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "xF"});
+	      		}
+      		} else if(table[i][j] != 0 && !columm_content.includes(j)) {
+      			columm_content.push(j);
+      			if (j<=$scope.inputVariables) {
+      				basic.push({columm: j, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "x"});
+      			} else {
+      				basic.push({columm: j-$scope.inputVariables, value: parseFloat(table[i][table[i].length-1]).toFixed(3), table: "xF"});
+      			}
+      		}
         }
 	    }
 
-	    // console.log(not_basic);
 	    // console.log("basicas");
 	    $scope.basics = basic;
+	    $scope.not_basics = not_basic;
 	    $scope.z_value = parseFloat(table[0][table[0].length-1]).toFixed(3);
 
 	  //   $.each(basic, function(index, value) {
